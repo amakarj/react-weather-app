@@ -1,38 +1,119 @@
-.App {
+
+.content {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: rgb(51, 51, 51);
   text-align: center;
+  width: 100%;
+  height: 1400px;
+  padding-bottom: calc(46% - 1000px);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.background {
+  background-color: rgb(172, 221, 245);
+  padding-top: 5em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.background.cold {
+  background-color: rgb(167, 179, 237);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.background.hot {
+  background-color: rgb(233, 192, 160);
+}
+
+.box {
+  background-color: rgba(253, 253, 253, 0.788);
+  width: 30%;
+  height: fit-content;
+  padding: 2.5em 2.5em;
+  box-shadow: 0.25em 0.25em rgba(63, 63, 72, 0.5);
+}
+
+.box.searchbox {
+  margin: auto;
+  border-top-right-radius: 2.5em;
+  border-top-left-radius: 2.5em;
+}
+
+.box.weatherbox {
+  margin: 2em auto;
+  border-bottom-right-radius: 2.5em;
+  border-bottom-left-radius: 2.5em;
+}
+
+.box h1 {
+  font-size: 3.5em;
+  text-shadow: 2px 2px rgb(50, 50, 70, 0.5);
+}
+
+.box p {
+  font-size: 1.25em;
+  text-shadow: 0.5px 0.5px rgb(50, 50, 70, 0.5);
+}
+
+.box input, button {
+  background-color: white;
+  font-size: 0.9em;
+  text-shadow: 0.4px 0.4px rgb(50, 50, 70, 0.5);
+  border: 0.05em solid rgba(131, 140, 151, 0.733);
+  box-shadow: 0.05em 0.05em rgb(194, 194, 194);
+}
+
+.box input {
+  width: 45%;
+  height: 1.2em;
+  padding: 0.3em 0.1em 0.2em 0.5em;
+  border-radius: 0.15em;
+}
+
+.box button {
+  width: min(fit-content, 60%);
+  height: 2em;
+  border-radius: 1em;
+}
+
+.row-date {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: row-reverse;
+  font-size: 1.25em;
+  font-weight: 500;
+  text-shadow: 0.4px 0.4px rgb(50, 50, 70, 0.5);
 }
 
-.App-link {
-  color: #61dafb;
+.row-city {
+  display: flex;
+  flex-direction: row;
+  font-size: 3.25em;
+  font-weight: 600;
+  text-shadow: 1.8px 1.8px rgb(50, 50, 70, 0.5);
+  margin: 0.4em auto;
+  border-bottom: 0.5px solid rgb(50, 50, 70, 0.5);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.row-temp {
+  display: flex;
+  flex-direction: row;
+  font-weight: 500;
+  text-shadow: 1.3px 1.3px rgb(50, 50, 70, 0.5);
+  padding-bottom: 0.5em;
+}
+
+.temp, .slash {
+  font-size: 3em;
+}
+
+.slash {
+  padding: 0 0.3em;
+}
+
+.unit {
+  font-size: 2em;
+}
+
+.row-desc {
+  display: flex;
+  flex-direction: row;
+  font-size: 2em;
+  font-weight: 500;
+  text-shadow: 1px 1px rgb(50, 50, 70, 0.5);
 }
