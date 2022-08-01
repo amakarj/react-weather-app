@@ -98,7 +98,7 @@ function App() {
 
             {/* Described weather */}
             <div className = 'row-desc'>          
-              {weather.WeatherText}{' '}<img src = {getIcon(weather.WeatherIcon)} alt = 'WeatherIcon'></img>
+              {weather.WeatherText}{' '}<img src = {process.env.PUBLIC_URL + getIcon(weather.WeatherIcon)} alt = 'WeatherIcon'></img>
             </div>
           </div>
           {/* WeatherCard ends here. */}
