@@ -9,11 +9,11 @@ function App() {
   // Function to fetch location and forecast information from AccuWeather API. Sets response to weather state and calls getDateTime function.
   const fetchWeather = () => {
     // Fetching a city according to user input and API key.
-    fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_key}&q=${location}`)
+    fetch(`https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_key}&q=${location}`)
     .then(response => response.json())
     // Fetching forecast information according to the given city's location key, and API key.
     .then(result => {
-      fetch(`http://dataservice.accuweather.com/currentconditions/v1/${result[0].Key}?apikey=${API_key}`)
+      fetch(`https://dataservice.accuweather.com/currentconditions/v1/${result[0].Key}?apikey=${API_key}`)
       .then(response => response.json())
       .then(result => {
         setWeather(result[0]);
