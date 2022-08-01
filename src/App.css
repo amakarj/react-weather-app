@@ -83,7 +83,7 @@
 .row-city {
   display: flex;
   flex-direction: row;
-  font-size: 3.25em;
+  font-size: 2.8em;
   font-weight: 600;
   text-shadow: 1.8px 1.8px rgb(50, 50, 70, 0.5);
   margin: 0.4em auto;
@@ -98,12 +98,8 @@
   padding-bottom: 0.5em;
 }
 
-.temp, .slash {
-  font-size: 3em;
-}
-
-.slash {
-  padding: 0 0.3em;
+.temp{
+  font-size: 2.4em;
 }
 
 .unit {
@@ -113,7 +109,7 @@
 .row-desc {
   display: flex;
   flex-direction: row;
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: 500;
   text-shadow: 1px 1px rgb(50, 50, 70, 0.5);
 }

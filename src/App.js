@@ -94,23 +94,11 @@ function App() {
               <div className = 'unit'> 
                 °C
               </div>
-              
-              <div className = 'slash'>
-                / 
-              </div> 
-
-              <div className = 'temp'>
-                {Math.round(weather.Temperature.Imperial.Value)}
-              </div>
-              
-              <div className = 'unit'> 
-                °F
-              </div>
             </div>
 
             {/* Described weather */}
             <div className = 'row-desc'>          
-              {weather.WeatherText}{' '}<img src = {getIcon(weather.WeatherIcon)} alt = 'Weather Icon'></img>
+              {weather.WeatherText}{' '}<img src = {getIcon(weather.WeatherIcon)} alt = 'WeatherIcon'></img>
             </div>
           </div>
           {/* WeatherCard ends here. */}
