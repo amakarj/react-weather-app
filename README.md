@@ -213,30 +213,30 @@ Data is stored in an object in API, so it consists of key and value pairs. The o
 ```
 ...
 
-  {(typeof weather.WeatherText != 'undefined') ? (
-  <div>
-    <div className = 'box weatherbox'>
+{(typeof weather.WeatherText != 'undefined') ? (
+<div>
+  <div className = 'box weatherbox'>
 
-      <div className = 'row-city'>
-        <div>{location}</div>
+    <div className = 'row-city'>
+      <div>{location}</div>
+    </div>
+
+    <div className = 'row-temp'>
+      <div className = 'temp'>
+        {Math.round(weather.Temperature.Metric.Value)}
       </div>
 
-      <div className = 'row-temp'>
-        <div className = 'temp'>
-          {Math.round(weather.Temperature.Metric.Value)}
-        </div>
-
-        <div className = 'unit'> 
-          °C
-        </div>
-      </div>
-
-      <div className = 'row-desc'>          
-        {weather.WeatherText}{' '}
+      <div className = 'unit'> 
+        °C
       </div>
     </div>
+
+    <div className = 'row-desc'>          
+      {weather.WeatherText}{' '}
+    </div>
   </div>
-  ) : ('')}
+</div>
+) : ('')}
         
 ...
 ```
@@ -269,12 +269,33 @@ const getIcon = (i) => {
 ...
 ```
 
+Everything we wanted, is now fetched. So, let's add some additional elements to the application, like date.  
 
-fetching data is complete, let's add some additional elements to the application. Date would great to have.
+```
+...
+
+<div className = 'row-date'>
+  {dateBuilder(new Date())}
+</div>
+
+...
+```
+
+```
+...
+const dateBuilder = (d) => {
+  let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+  let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+  let day = days[d.getDay()];
+  let date = d.getDate();
+  let month = months[d.getMonth()];
+  let year = d.getFullYear();
+
+  return `${day} ${date} ${month} ${year}`;
+}
+
+...
+```
 
 ### 4. Styling the application
-
-
-
-
-
