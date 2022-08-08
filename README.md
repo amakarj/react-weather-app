@@ -13,8 +13,8 @@ In the future, visualisation, usage of different libraries and APIs is possible.
 
 ### 1. Sign in to AccuWeather and create your own API key
 
--	To fetch any data from AccuWeather API, **you'll need your own API key**. You can registrate to AccuWeather **[here](https://developer.accuweather.com/)**.
--	After registration and logging in, you can create a new key on **My Apps** tab by clicking a button **Add a new App**.
+To fetch any data from AccuWeather API, **you'll need your own API key**. You can registrate to AccuWeather **[here](https://developer.accuweather.com/)**.  
+After registration and logging in, you can create a new key on **My Apps** tab by clicking a button **Add a new App**.
 
 ![My Apps on AccuWeather](/screenshots/my-apps-accuweather.png)
 
@@ -23,18 +23,19 @@ In the future, visualisation, usage of different libraries and APIs is possible.
 
 ### 2.	AccuWeather’s APIs
 
--	When you’ve got your API key, the next step is to get suitable API for your weather application. 
--	You can see a partial listing of APIs provided by AccuWeather in the image below. 
-- Weather App **requires at least two** of these APIs – one to provide a location key according to user’s input and other to retrieve current weather data based on the location key.
+When you’ve got your API key, the next step is to get suitable API for your weather application.
+You can see a partial listing of APIs provided by AccuWeather in the image below.  
+
+*Weather App **requires at least two** of these APIs – one to provide a location key according to user’s input and other to retrieve current weather data based on the location key.*
 
 ![API listing on AccuWeather](/screenshots/api-listing-accuweather.png)
 
 #### Locations API - required location key
-  - In the Weather App of this guide, we’ll get the location as text by user’s input. Therefore, choose a method **City Search** under **Text Search**, like in the image below.
+In the Weather App of this guide, we’ll get the location as text by user’s input. Therefore, choose a method **City Search** under **Text Search**, like in the image below.
 
 ![Locations API](/screenshots/locations-api.png)
 
-  - On the opening site, there’s a form which gives the straight URL for fetching data of this API after clicking a button **Send this request**. 
+On the site that opens, there’s a form which gives the straight URL for fetching data of this API after clicking a button **Send this request**. 
 
 ![City Search method form and URL](/screenshots/city-search-method.png)
 
@@ -48,8 +49,7 @@ http://dataservice.accuweather.com/locations/v1/cities/search?apikey=YOUR_API_KE
 Both API key and location query are required parameters!*
 
 #### Current Conditions API - weather data
-- Now that URL for the location key has been got, let’s get one for the other API – Current Conditions. 
-- The used method goes by the same name, Current Conditions, like in the image below.
+Now that URL for the location key has been got, let’s get one for the other API – Current Conditions. The used method goes by the same name, Current Conditions, like in the image below.
 
 ![Current Conditions API on AccuWeather](/screenshots/current-conditions-api.png)
 
@@ -67,9 +67,12 @@ https://dataservice.accuweather.com/currentconditions/v1/LOCATION_KEY?apikey=YOU
 
 #### States
 
-- Let’s start by declaring which data is needed.   
-  - First, import useState Hook from React.
-  - There's need for two states: **location** for user's input and **weather** for fetched weather data.
+Let’s start by importing useState Hook from React and then declare the states.
+There's a need for two states: 
+- **location** - stores user's input
+- **weather** - stores the weather data fetched from Current Conditions API
+
+App.js
 
 ```
 import React, { useState } from 'react';
@@ -79,21 +82,12 @@ function App() {
   const [location, setLocation] = useState('');
   const [weather, setWeather] = useState('');
   
-  return(
-    <div>
-
-    </div>
-  );
-}
-
-export default App;
+...
 ```
 
 #### Search bar
-- On this app, there’s a simple search bar (**a text typed input** and **a button**), where the user can type the name of the city. 
-- By clicking the button, value is sent to Locations API via URL we’ve got earlier. 
-- After creating the form, create a function `inputChanged()` and connect it to the input element by `onChange` event. 
-  - The function stores the value to location state whenever site renders.  
+On this app, there’s a simple search bar (**a text typed input** and **a button**), where the user can type the name of the city. By clicking the button, value is sent to Locations API via URL we’ve got earlier.  
+- The input element's value is **location** state, so we need to set value to it. Create a function `inputChanged()` and connect it to the input element by `onChange` event. This enables typing to element. The given function stores the typed value to the state by `setLocation()` whenever site renders.  
 
 Code looks something like this now: 
 
@@ -131,4 +125,38 @@ export default App;
 
 ### 2. Fetching data
 
+Now that user can type the location, it should be sent forward next.  
+- First let’s create a new folder **components** inside **src** folder. 
+-	Then add a new file **Api.js** inside the new folder and import it to **App.js**. 
+-	The new component we created stores the AccuWeather’s API key, we need when fetching data.
+
+Api.js
+ 
+```
+const API_key = 'YOUR_API_KEY';
+
+export default API_key;
+```
+
+App.js
+
+```
+import React, { useState } from 'react';
+import './App.css';
+import API_key from './components/Api.js';
+
+function App() {
+
+...
+```
+
+Before the actual data fetching, let’s add an empty function `fetchWeather()` and connect it to the button by `onClick` event.  
+*Remember, F12 is a friend. You’ll get to see the actual responses before your site is displaying it.*
+
+Below you can see a beginning of response from Locations API. The user has searched for Helsinki and API returns the data according to it.  
+There you can see the location key **Key** we need. We can access it with `${result[0].Key}`.
+
+`[{"Version":1,"Key":"133328","Type":"City","Rank":30,"LocalizedName":"Helsinki","EnglishName":"Helsinki",`
+
+![Browser view of fetching response](/screenshot/browser-view.png)
 
