@@ -158,5 +158,5 @@ There you can see the location key **Key** we need. We can access it with `${res
 
 `[{"Version":1,"Key":"133328","Type":"City","Rank":30,"LocalizedName":"Helsinki","EnglishName":"Helsinki",`
 
-![Browser view of fetching response](/screenshot/browser-view.png)
+![Browser view of fetching response](/screenshots/browser-view.png)
 
