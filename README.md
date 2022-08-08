@@ -14,7 +14,7 @@ In the future, visualisation, usage of different libraries and APIs is possible.
 ### 1. Sign in to AccuWeather and create your own API key
 
 -	To fetch any data from AccuWeather API, **you'll need your own API key**. You can registrate to AccuWeather [here](https://developer.accuweather.com/).
--	After registration and logging in, you can create a new key on **My Apps** tab by clicking a button **Add a new App**. See the image below.
+-	After registration and logging in, you can create a new key on **My Apps** tab by clicking a button **Add a new App**.
 
 ![My Apps on AccuWeather](/screenshots/my-apps-accuweather.png)
 
@@ -59,6 +59,6 @@ URL's in form of:
 https://dataservice.accuweather.com/currentconditions/v1/LOCATION_KEY?apikey=YOUR_API_KEY
 ```
 
-*Notice that this time AccuWeather's form requires only API key! **The location key must be included to URL as well**, otherwise the second fetch won't work properly.*
+*Notice that this time AccuWeather's form requires only API key. **The location key must be included to URL as well**, otherwise the second fetch won't work properly!*
 
 ## Making the Application
