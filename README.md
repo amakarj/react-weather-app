@@ -5,7 +5,7 @@
 
 This guide is step-by-step guide for a simple Weather App. Weather data has been fetched from AccuWeather's Locations and Current Conditions API. Main emphasis is on how you work with APIs - how to fetch data and display it. There will be a visual example of the app at the end, but it's not the guide's main focus, therefore, it's only a short look. 
 
-This is the final task of a school project about React fundamentals. It's been done alone, but we worked in pairs on first three tasks. Some explanations or stages, e.g. pre-installations and definitions of fundamentals, have been excluded from this task as they have already been explained elsewhere. To get introduced on earlier tasks, you can visit **[here](https://github.com/jenhakk/React.js_Fundamentals)**.
+This is the final task of a school project about React fundamentals. Notice that programming isn't done by the best practice and there'll be most definitely more simple or shorter way to do something (the student just didn't figure it out yet). It's been done alone, but is worked in pairs on first three tasks. Some explanations or stages, e.g. pre-installations and definitions of fundamentals, have been excluded from this task as they have already been explained elsewhere. To get introduced on earlier tasks, you can visit **[here](https://github.com/jenhakk/React.js_Fundamentals)**.
 
 In the future, visualisation, usage of different libraries and APIs is possible. 
 
@@ -200,3 +200,81 @@ function App() {
 
 ...
 ```
+
+### 3. Displaying the data
+
+Now that data is fetched, we can display it on the page. This weather app will be simple and doesn’t contain other than key information of current weather. Data we’ll get and their keys are:
+- **temperature** - Temperature.Metric.Value
+- **description of weather** - WeatherText
+- **icon for described weather** - WeatherIcon
+
+Data is stored in an object in API, so it consists of key and value pairs. The object is fetched and set to the **weather** state, so we’ll get values we want by typing `{weather.keyname}`. You can form your weather data as you want on the site - this is how it is arranged in this Weather App: 
+
+```
+...
+
+  {(typeof weather.WeatherText != 'undefined') ? (
+  <div>
+    <div className = 'box weatherbox'>
+
+      <div className = 'row-city'>
+        <div>{location}</div>
+      </div>
+
+      <div className = 'row-temp'>
+        <div className = 'temp'>
+          {Math.round(weather.Temperature.Metric.Value)}
+        </div>
+
+        <div className = 'unit'> 
+          °C
+        </div>
+      </div>
+
+      <div className = 'row-desc'>          
+        {weather.WeatherText}{' '}
+      </div>
+    </div>
+  </div>
+  ) : ('')}
+        
+...
+```
+
+*Notice the conditonal structure around HTML. It is there to check if data is already fetched from API and if it is, the HTML gets run. Otherwise it returns empty string and error is avoided.*  
+
+Now that temperature and description have been fetched, let's add the icons. AccuWeather provides an individual icon for each description **[here](https://developer.accuweather.com/weather-icons)**. Saving them to your computer by their icon number, ease their usage. After you're done, copy paste icons inside your project folder under **public**. For example, add icon next to description, like so:
+
+```
+...
+
+<div className = 'row-desc'>          
+  {weather.WeatherText}{' '}<img src = {process.env.PUBLIC_URL + getIcon(weather.WeatherIcon)} alt = 'WeatherIcon'></img>
+</div>
+
+...
+```
+*Notice `process.env.PUBLIC_URL` before `getIcon()` function! When deploying React application to GitHub, it stops reading from **public** folder and icons won't work anymore. This way the problem is fixed and icons show alright.*  
+
+Now that the `<img>` element is in place, we still need a function `getIcon()` to get the actual icon based on a icon number we got from API response. 
+Add the function behind some other function before `return()`. The function gets **WeatherIcon** as the parameter, which is numeral, and returns responsive picture from the icons saved to the computer.
+
+```
+...
+
+const getIcon = (i) => {
+  return `/icons/${i}.png`;
+}
+
+...
+```
+
+
+fetching data is complete, let's add some additional elements to the application. Date would great to have.
+
+### 4. Styling the application
+
+
+
+
+
