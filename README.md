@@ -44,7 +44,7 @@ URL’s in form of:
 http://dataservice.accuweather.com/locations/v1/cities/search?apikey=YOUR_API_KEY&q=LOCATION
 ```
 
-*Notice that you need to replace apikey and q's values with your personal key and location query (location state in the code)!  
+*Notice that you need to replace apikey and q's values with your personal key and location query (location state in the code).  
 Both API key and location query are required parameters!*
 
 #### Current Conditions API - weather data
@@ -62,3 +62,73 @@ https://dataservice.accuweather.com/currentconditions/v1/LOCATION_KEY?apikey=YOU
 *Notice that this time AccuWeather's form requires only API key. **The location key must be included to URL as well**, otherwise the second fetch won't work properly!*
 
 ## Making the Application
+
+### 1.	Searching a city
+
+#### States
+
+- Let’s start by declaring which data is needed.   
+  - First, import useState Hook from React.
+  - There's need for two states: **location** for user's input and **weather** for fetched weather data.
+
+```
+import React, { useState } from 'react';
+import './App.css';
+
+function App() {
+  const [location, setLocation] = useState('');
+  const [weather, setWeather] = useState('');
+  
+  return(
+    <div>
+
+    </div>
+  );
+}
+
+export default App;
+```
+
+#### Search bar
+- On this app, there’s a simple search bar (**a text typed input** and **a button**), where the user can type the name of the city. 
+- By clicking the button, value is sent to Locations API via URL we’ve got earlier. 
+- After creating the form, create a function `inputChanged()` and connect it to the input element by `onChange` event. 
+  - The function stores the value to location state whenever site renders.  
+
+Code looks something like this now: 
+
+```
+import React, { useState } from 'react';
+import './App.css';
+
+function App() {
+  const [location, setLocation] = useState('');
+  const [weather, setWeather] = useState('');
+  
+  const inputChanged = (event) => {
+    setLocation(event.target.value);
+  }
+  
+  return(
+    <div className = 'background'>
+      <div className = 'content'>
+        <div className = 'box searchbox'>
+          <h1>WEATHER APP</h1>
+          <p>See current weather by locality</p>
+
+          <input type = 'text' name = 'location' placeholder = 'Search for a locality' value = {location} />{' '}
+          <button>Search</button><br />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
+```
+
+*Notice that there are div elements with classes to wrap different types of contents so we can apply some CSS to them later.*
+
+### 2. Fetching data
+
+
