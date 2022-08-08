@@ -125,6 +125,8 @@ export default App;
 
 ### 2. Fetching data
 
+#### API key
+
 Now that user can type the location, it should be sent forward next.  
 - First let’s create a new folder **components** inside **src** folder. 
 -	Then add a new file **Api.js** inside the new folder and import it to **App.js**. 
@@ -150,13 +152,51 @@ function App() {
 ...
 ```
 
-Before the actual data fetching, let’s add an empty function `fetchWeather()` and connect it to the button by `onClick` event.  
-*Remember, F12 is a friend. You’ll get to see the actual responses before your site is displaying it.*
-
+Remember, F12 is a friend. You’ll get to see the actual responses before displaying on the site.  
 Below you can see a beginning of response from Locations API. The user has searched for Helsinki and API returns the data according to it.  
-There you can see the location key **Key** we need. We can access it with `${result[0].Key}`.
+The location key **Key** we need is the second a key-value pair. It can be accessed it with **`${result[0].Key}`**.
 
 `[{"Version":1,"Key":"133328","Type":"City","Rank":30,"LocalizedName":"Helsinki","EnglishName":"Helsinki",`
 
 ![Browser view of fetching response](/screenshots/browser-view.png)
 
+#### Fetching
+
+Let’s add an empty function `fetchWeather()` and connect it to the button by `onClick` event.
+Now let’s start building the actual function. 
+- Fetch **location key** using `fetch()` method by adding Locations API's URL inside it.  
+  - URL: `https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_key}&q=${location}`
+- Then change response to JSON and direct the result to next `fetch()` method to get the **weather data**.  
+  - URL: `https://dataservice.accuweather.com/currentconditions/v1/${result[0].Key}?apikey=${API_key}`
+- Then change response to JSON, again.
+- Finally set the result to **weather** state with `setWeather()` to wait for usage.
+
+App.js
+
+```
+import React, { useState } from 'react';
+import './App.css';
+import API_key from './components/Api.js';
+
+function App() {
+  const [location, setLocation] = useState('');
+  const [weather, setWeather] = useState('');
+  
+  const fetchWeather = () => {
+    fetch(`https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_key}&q=${location}`)
+    .then(response => response.json())
+    .then(result => {
+      fetch(`https://dataservice.accuweather.com/currentconditions/v1/${result[0].Key}?apikey=${API_key}`)
+      .then(response => response.json())
+      .then(result => {
+        setWeather(result[0]);
+      })
+    })   
+  };
+
+...
+
+<button onClick = {fetchWeather}>Search</button><br />
+
+...
+```
