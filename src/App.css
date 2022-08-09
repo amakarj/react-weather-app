@@ -1,4 +1,3 @@
-
 .content {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   color: rgb(51, 51, 51);
@@ -18,7 +17,7 @@
 }
 
 .background.hot {
-  background-color: rgb(233, 192, 160);
+  background-color: rgb(246, 178, 219);
 }
 
 .box {
@@ -103,7 +102,7 @@
 }
 
 .unit {
-  font-size: 2em;
+  font-size: 1.5em;
 }
 
 .row-desc {

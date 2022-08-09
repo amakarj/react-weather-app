@@ -1,31 +1,32 @@
 import React, { useState } from 'react';
 import './App.css';
-import API_key from './components/api';
+import API_key from './components/Api.js';
 
 function App() {
-  const [location, setLocation] = useState(''); // user types the city and it is saved to this state
-  const [weather, setWeather] = useState(''); // weather fetched from AccuWeather API
+  const [location, setLocation] = useState(''); // The city typed by user.
+  const [weather, setWeather] = useState(''); // Weather fetched from AccuWeather API.
 
-  // Function to fetch location and forecast information from AccuWeather API. Sets response to weather state and calls getDateTime function.
+  // Fetches location key and weather data from AccuWeather APIs. Changes responses to JSON and sets acquired weather data to weather state.
   const fetchWeather = () => {
-    // Fetching a city according to user input and API key.
+    // Fetches a location key according to user input and API key.
     fetch(`https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_key}&q=${location}`)
     .then(response => response.json())
-    // Fetching forecast information according to the given city's location key, and API key.
+    // Fetches weather data according to the given city's location key, and API key.
     .then(result => {
       fetch(`https://dataservice.accuweather.com/currentconditions/v1/${result[0].Key}?apikey=${API_key}`)
       .then(response => response.json())
       .then(result => {
         setWeather(result[0]);
       })
-    })    
+    })   
   };
 
-  // Function that set written city to the location state. 
+  // Sets input element's value to location state whenever the value renders.
   const inputChanged = (event) => {
     setLocation(event.target.value);
   }
 
+  // Constructs date in form of week day, day, month and year
   const dateBuilder = (d) => {
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -43,6 +44,7 @@ function App() {
   }
 
   return (
+    // div -> brings background to the site
     <div className = {(typeof weather.WeatherText != 'undefined') 
       ? ((weather.Temperature.Metric.Value <= 5)
         ? 'background cold'
@@ -50,33 +52,26 @@ function App() {
           ? 'background hot'
           : 'background') )
       : 'background'}>
-
-      {/* Content starts here - the top of the background. */}
-      <div  className = 'content'>
-
-        {/* Search card starts here. */}
+      {/* div -> wraps all the content inside. Background covers this area. */}
+      <div className = 'content'>
+        {/* div -> wraps all city search elements inside */}
         <div className = 'box searchbox'>
           <h1>WEATHER APP</h1>
           <p>See current weather by locality</p>
 
-          <div className = 'search'>
-            <input 
-              type = 'text' 
-              name = 'location' 
-              placeholder = 'Search for locality' 
-              value = {location} 
-              onChange = {inputChanged} />{' '}
-            <button onClick = {fetchWeather}>Search</button><br />
-          </div>
+          <input type = 'text' name = 'location' placeholder = 'Search for a locality' value = {location} onChange = {inputChanged} />{' '}
+          <button onClick = {fetchWeather}>Search</button><br />
         </div>
-        {/* Search card ends here. */}
-    
-      {(typeof weather.WeatherText != 'undefined') ? (
+        {/* Searchbox ends here. */}
+
+        {/* Without this line, weather data below brings up error, if location isn't searched up before-hand. 
+        The line checks if weather description is fetched, if it is -> HTML below is run. Otherwise it returns empty string. */}
+        {(typeof weather.WeatherText != 'undefined') ? (
         <div>
-          {/* WeatherCard starts here. */}
-          {/* Date, Time, City */}
+          {/* div -> wraps all weather data inside. */}
           <div className = 'box weatherbox'>
-            
+
+            {/* Date, City name */}
             <div className = 'row-date'>
               {dateBuilder(new Date())}
             </div>
@@ -85,7 +80,7 @@ function App() {
               <div>{location}</div>
             </div>
 
-            {/* Temperature both in metric and fahrenheit */}
+            {/* Temperature in number and its unit */}
             <div className = 'row-temp'>
               <div className = 'temp'>
                 {Math.round(weather.Temperature.Metric.Value)}
@@ -103,11 +98,11 @@ function App() {
           </div>
           {/* WeatherCard ends here. */}
         </div>
-      ) : ('')} 
+        ) : ('')} 
       </div>
-      {/* Content ends here - the bottom of background. */}
+      {/* Content ends here. */}
     </div>
-    
+    // Background ends here.
   );
 }
 
