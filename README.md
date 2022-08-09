@@ -306,4 +306,12 @@ const dateBuilder = (d) => {
 
 ### 4. Styling the application
 
+#### Weather App without any styling
+Information's been gathered on the application but there isn't any styling except default centering React provides. It looks rather plain, so some visualising would be in order.
 
+![Weather App without any CSS](/screenshots/weather-app-plain.png)
+
+#### Weather App with basic visualizing
+Here instead is a Weather App with applied CSS. It has background color which changes based on temperature. Information's been divided on own boxes and it's styled to be clear. 
+
+![Weather App with CSS](/screenshots/weather-app-css.png)
