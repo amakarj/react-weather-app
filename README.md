@@ -5,9 +5,9 @@
 
 This guide is step-by-step guide for a simple Weather App. Weather data has been fetched from AccuWeather's Locations and Current Conditions API. Main emphasis is on how you work with APIs - how to fetch data and display it. There will be a visual example of the app at the end, but it's not the guide's main focus, therefore, it's only a short look. 
 
-This is the final task of a school project about React fundamentals. Notice that programming isn't done by the best practice and there'll be most definitely more simple or shorter way to do something (the student just didn't figure it out yet). It's been done alone, but is worked in pairs on first three tasks. Some explanations or stages, e.g. pre-installations and definitions of fundamentals, have been excluded from this task as they have already been explained elsewhere. To get introduced on earlier tasks, you can visit **[here](https://github.com/jenhakk/React.js_Fundamentals)**.
+This is the final task of a school project about React fundamentals. Notice that programming isn't done by the best practice and there'll be most definitely more simple or shorter ways to do something (the student just didn't figure it out yet). This part's been done alone, but is worked in pairs otherwise. Some explanations or stages, e.g. pre-installations and definitions of fundamentals, have been excluded from this task as they have already been explained elsewhere. To get introduced on earlier tasks, you can visit **[here](https://github.com/jenhakk/React.js_Fundamentals)**.
 
-In the future, visualisation, usage of different libraries and APIs is possible. 
+In the future, improvement of visualizing as well as the broader usage of different libraries and APIs are possible. 
 
 ## Making Preparations
 
@@ -23,7 +23,7 @@ After registration and logging in, you can create a new key on **My Apps** tab b
 
 ### 2.	AccuWeather’s APIs
 
-When you’ve got your API key, the next step is to get suitable API for your weather application.
+When you’ve got the API key, the next step is to get a suitable API for your weather application.
 You can see a partial listing of APIs provided by AccuWeather in the image below.  
 
 *Weather App **requires at least two** of these APIs – one to provide a location key according to user’s input and other to retrieve current weather data based on the location key.*
