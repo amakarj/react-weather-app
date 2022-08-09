@@ -21,6 +21,7 @@ After registration and logging in, you can create a new key on **My Apps** tab b
 ### 2.	AccuWeather’s APIs
 When you’ve got the API key, the next step is to get a suitable API for your weather application.
 You can see a partial listing of APIs provided by AccuWeather in the image below.  
+
 *Weather App **requires at least two** of these APIs – one to provide a location key according to user’s input and other to retrieve current weather data based on the location key.*
 
 ![API listing on AccuWeather](public/screenshots/api-listing-accuweather.png)
@@ -141,6 +142,7 @@ function App() {
 ```
 
 Remember, F12 is a friend. You’ll get to see the actual responses before displaying on the site.  
+
 Below you can see a beginning of response from Locations API. The user has searched for Helsinki and API returns the data according to it.  
 The location key **Key** we need is the second a key-value pair. It can be accessed it with **`${result[0].Key}`**.  
 
@@ -502,3 +504,8 @@ return(
   text-shadow: 1px 1px rgb(50, 50, 70, 0.5);
 }
 ```
+
+#### Weather App
+
+https://user-images.githubusercontent.com/75020361/183698490-36f03d76-f419-4025-9162-a137a42af953.mp4
+
