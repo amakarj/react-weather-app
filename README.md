@@ -15,41 +15,59 @@ In the future, improvement of visualizing as well as the broader usage of differ
 To fetch any data from AccuWeather API, **you'll need your own API key**. You can registrate to AccuWeather **[here](https://developer.accuweather.com/)**.  
 After registration and logging in, you can create a new key on **My Apps** tab by clicking a button **Add a new App**.
 
-![My Apps on AccuWeather](/screenshots/my-apps-accuweather.png)
-
+![My Apps on AccuWeather](public/screenshots/my-apps-accuweather.png)
 *Notice that you can add only one API key at time on a free account!* 
+
 ### 2.	AccuWeather’s APIs
 When you’ve got the API key, the next step is to get a suitable API for your weather application.
 You can see a partial listing of APIs provided by AccuWeather in the image below.  
 *Weather App **requires at least two** of these APIs – one to provide a location key according to user’s input and other to retrieve current weather data based on the location key.*
-![API listing on AccuWeather](/screenshots/api-listing-accuweather.png)
+
+![API listing on AccuWeather](public/screenshots/api-listing-accuweather.png)
+
 #### Locations API - required location key
+
 In the Weather App of this guide, we’ll get the location as text by user’s input. Therefore, choose a method **City Search** under **Text Search**, like in the image below.
-![Locations API](/screenshots/locations-api.png)
+
+![Locations API](public/screenshots/locations-api.png)
+
 On the site that opens, there’s a form which gives the straight URL for fetching data of this API after clicking a button **Send this request**. 
-![City Search method form and URL](/screenshots/city-search-method.png)
+
+![City Search method form and URL](public/screenshots/city-search-method.png)
+
 URL’s in form of:
 ```
 http://dataservice.accuweather.com/locations/v1/cities/search?apikey=YOUR_API_KEY&q=LOCATION
 ```
 *Notice that you need to replace apikey and q's values with your personal key and location query (location state in the code).  
 Both API key and location query are required parameters!*
+
 #### Current Conditions API - weather data
+
 Now that URL for the location key has been got, let’s get one for the other API – Current Conditions. The used method goes by the same name, Current Conditions, like in the image below.
-![Current Conditions API on AccuWeather](/screenshots/current-conditions-api.png)
+
+![Current Conditions API on AccuWeather](public/screenshots/current-conditions-api.png)
+
 URL's in form of:
+
 ```
 https://dataservice.accuweather.com/currentconditions/v1/LOCATION_KEY?apikey=YOUR_API_KEY
 ```
+
 *Notice that this time AccuWeather's form requires only API key. **The location key must be included to URL as well**, otherwise the second fetch won't work properly!*
+
+
 ## Making the Application
 ### 1.	Searching a city
+
 #### States
 Let’s start by importing useState Hook from React and then declare the states.
 There's a need for two states: 
 - **location** - stores user's input
 - **weather** - stores the weather data fetched from Current Conditions API
+
 App.js
+
 ```
 import React, { useState } from 'react';
 import './App.css';
@@ -59,10 +77,14 @@ function App() {
   
 ...
 ```
+
 #### Search bar
+
 On this app, there’s a simple search bar (**a text typed input** and **a button**), where the user can type the name of the city. By clicking the button, value is sent to Locations API via URL we’ve got earlier.  
 - The input element's value is **location** state, so we need to set value to it. Create a function `inputChanged()` and connect it to the input element by `onChange` event. This enables typing to element. The given function stores the typed value to the state by `setLocation()` whenever site renders.  
+
 Code looks something like this now: 
+
 ```
 import React, { useState } from 'react';
 import './App.css';
@@ -89,33 +111,45 @@ function App() {
 }
 export default App;
 ```
+
 *Notice that there are div elements with classes to wrap different types of contents so we can apply some CSS to them later.*
+
 ### 2. Fetching data
 #### API key
+
 Now that user can type the location, it should be sent forward next.  
 - First let’s create a new folder **components** inside **src** folder. 
 -	Then add a new file **Api.js** inside the new folder and import it to **App.js**. 
 -	The new component we created stores the AccuWeather’s API key, we need when fetching data.
+
 Api.js
  
 ```
 const API_key = 'YOUR_API_KEY';
 export default API_key;
 ```
+
 App.js
+
 ```
 import React, { useState } from 'react';
 import './App.css';
 import API_key from './components/Api.js';
 function App() {
+
 ...
 ```
+
 Remember, F12 is a friend. You’ll get to see the actual responses before displaying on the site.  
 Below you can see a beginning of response from Locations API. The user has searched for Helsinki and API returns the data according to it.  
-The location key **Key** we need is the second a key-value pair. It can be accessed it with **`${result[0].Key}`**.
-`[{"Version":1,"Key":"133328","Type":"City","Rank":30,"LocalizedName":"Helsinki","EnglishName":"Helsinki",`
-![Browser view of fetching response](/screenshots/browser-view.png)
+The location key **Key** we need is the second a key-value pair. It can be accessed it with **`${result[0].Key}`**.  
+
+`[{"Version":1,"Key":"133328","Type":"City","Rank":30,"LocalizedName":"Helsinki","EnglishName":"Helsinki",`  
+
+![Browser view of fetching response](public/screenshots/browser-view.png)
+
 #### Fetching
+
 Let’s add an empty function `fetchWeather()` and connect it to the button by `onClick` event.
 Now let’s start building the actual function. 
 - Fetch **location key** using `fetch()` method by adding Locations API's URL inside it.  
@@ -124,7 +158,9 @@ Now let’s start building the actual function.
   - URL: `https://dataservice.accuweather.com/currentconditions/v1/${result[0].Key}?apikey=${API_key}`
 - Then change response to JSON, again.
 - Finally set the result to **weather** state with `setWeather()` to wait for usage.
+
 App.js
+
 ```
 import React, { useState } from 'react';
 import './App.css';
@@ -144,19 +180,27 @@ function App() {
       })
     })   
   };
+  
 ...
+
 <button onClick = {fetchWeather}>Search</button><br />
+
 ...
 ```
+
 ### 3. Displaying the data
 #### Temperature and description of weather
+
 Now that data is fetched, we can display it on the page. This weather app will be simple and doesn’t contain other than key information of current weather. Data we’ll get and their keys are:
 - **temperature** - Temperature.Metric.Value
 - **description of weather** - WeatherText
 - **icon for described weather** - WeatherIcon
+
 Data is stored in an object in API, so it consists of key and value pairs. The object is fetched and set to the **weather** state, so we’ll get values we want by typing `{weather.keyname}`. You can form your weather data as you want on the site - this is how it is arranged in this Weather App: 
+
 ```
 ...
+
 {(typeof weather.WeatherText != 'undefined') ? (
 <div>
   <div className = 'box weatherbox'>
@@ -181,23 +225,33 @@ Data is stored in an object in API, so it consists of key and value pairs. The o
 ...
 ```
 *Notice the conditonal structure around HTML. It is there to check if data is already fetched from API and if it is, the HTML gets run. Otherwise it returns empty string and error is avoided.*  
+
 #### Icon
+
 Since temperature and description have been fetched, let's add the icons. AccuWeather provides an individual icon for each description **[here](https://developer.accuweather.com/weather-icons)**. Saving them to your computer by their icon number, ease their usage. After you're done, copy paste icons inside your project folder under **public**. For example, add icon next to description, like so:
+
 ```
 ...
+
 <div className = 'row-desc'>          
   {weather.WeatherText}{' '}<img src = {process.env.PUBLIC_URL + getIcon(weather.WeatherIcon)} alt = 'WeatherIcon'></img>
 </div>
+
 ...
 ```
+
 *Notice `process.env.PUBLIC_URL` before `getIcon()` function! When deploying React application to GitHub, it stops reading from **public** folder and icons won't work anymore. This way the problem is fixed and icons show alright.*  
+
 The `<img>` element is now in place, but you still need the function `getIcon()` to get the actual icon based. It happens with a icon number we got from API response. 
 Add the function behind some other function before `return()`. The function gets **WeatherIcon** as the parameter, which is numeral, and returns responsive picture from the icons saved to the computer.
+
 ```
 ...
+
 const getIcon = (i) => {
   return `/icons/${i}.png`;
 }
+
 ...
 ```
 #### Date
@@ -207,15 +261,17 @@ The `dateBuilder()` function takes `Date` object as a parameter, which is utiliz
 
 ```
 ...
+
 <div className = 'row-date'>
   {dateBuilder(new Date())}
 </div>
+
 ...
-```
 ``` 
 
 ```
 ...
+
 const dateBuilder = (d) => {
   let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -225,9 +281,12 @@ const dateBuilder = (d) => {
   let year = d.getFullYear();
   return `${day} ${date} ${month} ${year}`;
 }
+
 ...
 ```
+
 #### Final code
+
 The code looks something like this now we have added everything:
 
 ```
@@ -309,15 +368,17 @@ export default App;
 ```
 
 ### 4. Styling the application
-
 #### Weather App without any styling
+
 Information's been gathered on the application but there isn't any styling except default centering React provides. It looks rather plain, so some visualising would be in order.
-![Weather App without any CSS](/screenshots/weather-app-plain.png)
+
+![Weather App without any CSS](public/screenshots/weather-app-plain.png)
 
 #### Weather App with basic visualizing
+
 Here instead is a Weather App with applied CSS. CSS for this app has been quite basic. Fonts have been resized, weighted, recolored and shadowed. There's a background color, which changes based on temperature. Information's been divided to own bordered flexboxes and it's styled to be clear. Like mentioned earlier, sections of code is divided by `<div>` elements with classes to make it more customisable. The div class **background** takes in class **content**, which includes everything you can see on the site.
 
-![Weather App with CSS](/screenshots/weather-app-css.png)
+![Weather App with CSS](public/screenshots/weather-app-css.png)
 
 #### Background
 
@@ -339,6 +400,7 @@ return(
         
 ...
 ```
+
 #### CSS file App.css
 
 ```
