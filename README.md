@@ -203,6 +203,8 @@ function App() {
 
 ### 3. Displaying the data
 
+#### Temperature and description of weather
+
 Now that data is fetched, we can display it on the page. This weather app will be simple and doesn’t contain other than key information of current weather. Data we’ll get and their keys are:
 - **temperature** - Temperature.Metric.Value
 - **description of weather** - WeatherText
@@ -243,7 +245,9 @@ Data is stored in an object in API, so it consists of key and value pairs. The o
 
 *Notice the conditonal structure around HTML. It is there to check if data is already fetched from API and if it is, the HTML gets run. Otherwise it returns empty string and error is avoided.*  
 
-Now that temperature and description have been fetched, let's add the icons. AccuWeather provides an individual icon for each description **[here](https://developer.accuweather.com/weather-icons)**. Saving them to your computer by their icon number, ease their usage. After you're done, copy paste icons inside your project folder under **public**. For example, add icon next to description, like so:
+#### Icon
+
+Since temperature and description have been fetched, let's add the icons. AccuWeather provides an individual icon for each description **[here](https://developer.accuweather.com/weather-icons)**. Saving them to your computer by their icon number, ease their usage. After you're done, copy paste icons inside your project folder under **public**. For example, add icon next to description, like so:
 
 ```
 ...
@@ -256,7 +260,7 @@ Now that temperature and description have been fetched, let's add the icons. Acc
 ```
 *Notice `process.env.PUBLIC_URL` before `getIcon()` function! When deploying React application to GitHub, it stops reading from **public** folder and icons won't work anymore. This way the problem is fixed and icons show alright.*  
 
-Now that the `<img>` element is in place, we still need a function `getIcon()` to get the actual icon based on a icon number we got from API response. 
+The `<img>` element is now in place, but you still need the function `getIcon()` to get the actual icon based. It happens with a icon number we got from API response. 
 Add the function behind some other function before `return()`. The function gets **WeatherIcon** as the parameter, which is numeral, and returns responsive picture from the icons saved to the computer.
 
 ```
@@ -268,6 +272,7 @@ const getIcon = (i) => {
 
 ...
 ```
+#### Date
 
 Everything we wanted, is now fetched. So, let's add some additional elements to the application, like date.  
 
@@ -283,6 +288,7 @@ Everything we wanted, is now fetched. So, let's add some additional elements to 
 
 ```
 ...
+
 const dateBuilder = (d) => {
   let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -299,3 +305,5 @@ const dateBuilder = (d) => {
 ```
 
 ### 4. Styling the application
+
+
