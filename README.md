@@ -5,9 +5,9 @@
 
 This guide is step-by-step guide for a simple Weather App. Weather data has been fetched from AccuWeather's Locations and Current Conditions API. Main emphasis is on how you work with APIs - how to fetch data and display it. There will be a visual example of the app at the end, but it's not the guide's main focus, therefore, it's only a short look. 
 
-This is the final task of a school project about React fundamentals. Notice that programming isn't done by the best practice and there'll be most definitely more simple or shorter ways to do something (the student just didn't figure it out yet). This part's been done alone, but is worked in pairs otherwise. Some explanations or stages, e.g. pre-installations and definitions of fundamentals, have been excluded from this task as they have already been explained elsewhere. To get introduced on earlier tasks, you can visit **[here](https://github.com/jenhakk/React.js_Fundamentals)**.
+This is the final task of a school project about React fundamentals. It's been done alone, but is worked in pairs in other tasks. Some explanations or stages, e.g. pre-installations and definitions of fundamentals, have been excluded from this task as they have already been explained elsewhere. To get introduced on earlier tasks, you can visit **[here](https://github.com/jenhakk/React.js_Fundamentals)**.
 
-In the future, improvement of visualizing as well as the broader usage of different libraries and APIs are possible. 
+In the future, improvement of visualizing as well as the broader usage of different libraries and APIs are possible. Responsiveness will be improved.
 
 ## Making Preparations
 
@@ -275,6 +275,7 @@ const getIcon = (i) => {
 #### Date
 
 Everything we wanted, is now fetched. So, let's add some additional elements to the application, like date.  
+The `dateBuilder()` function takes `Date` object as a parameter, which is utilized to get current weekday, day number, month and year.
 
 ```
 ...
@@ -284,7 +285,7 @@ Everything we wanted, is now fetched. So, let's add some additional elements to 
 </div>
 
 ...
-```
+``` 
 
 ```
 ...
@@ -303,6 +304,102 @@ const dateBuilder = (d) => {
 
 ...
 ```
+#### Final code
+The code looks something like this now we have added everything:
+
+```
+import React, { useState } from 'react';
+import './App.css';
+import API_key from './components/Api.js';
+
+function App() {
+  const [location, setLocation] = useState(''); // The city typed by user.
+  const [weather, setWeather] = useState(''); // Weather fetched from AccuWeather API.
+
+  const fetchWeather = () => {
+    fetch(`https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_key}&q=${location}`)
+    .then(response => response.json())
+    .then(result => {
+      fetch(`https://dataservice.accuweather.com/currentconditions/v1/${result[0].Key}?apikey=${API_key}`)
+      .then(response => response.json())
+      .then(result => {
+        setWeather(result[0]);
+      })
+    })   
+  };
+
+  const inputChanged = (event) => {
+    setLocation(event.target.value);
+  }
+
+  const dateBuilder = (d) => {
+    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    let day = days[d.getDay()];
+    let date = d.getDate();
+    let month = months[d.getMonth()];
+    let year = d.getFullYear();
+
+    return `${day} ${date} ${month} ${year}`;
+  }
+
+  const getIcon = (i) => {
+    return `/icons/${i}.png`;
+  }
+
+  return (
+    <div className = {(typeof weather.WeatherText != 'undefined') 
+    ? ((weather.Temperature.Metric.Value <= 5)
+      ? 'background cold'
+      : ((weather.Temperature.Metric.Value > 20)
+        ? 'background hot'
+        : 'background') )
+    : 'background'}>
+      <div className = 'content'>
+        <div className = 'box searchbox'>
+          <h1>WEATHER APP</h1>
+          <p>See current weather by locality</p>
+
+          <input type = 'text' name = 'location' placeholder = 'Search for a locality' value = {location} onChange = {inputChanged} />{' '}
+          <button onClick = {fetchWeather}>Search</button><br />
+        </div>
+
+        {(typeof weather.WeatherText != 'undefined') ? (
+        <div>
+          <div className = 'box weatherbox'>
+
+            <div className = 'row-date'>
+              {dateBuilder(new Date())}
+            </div>
+
+            <div className = 'row-city'>
+              <div>{location}</div>
+            </div>
+
+            <div className = 'row-temp'>
+              <div className = 'temp'>
+                {Math.round(weather.Temperature.Metric.Value)}
+              </div>
+
+              <div className = 'unit'> 
+                °C
+              </div>
+            </div>
+
+            <div className = 'row-desc'>          
+              {weather.WeatherText}{' '}<img src = {process.env.PUBLIC_URL + getIcon(weather.WeatherIcon)} alt = 'WeatherIcon'></img>
+            </div>
+          </div>
+        </div>
+        ) : ('')} 
+      </div>
+    </div>
+  );
+}
+
+export default App;
+```
 
 ### 4. Styling the application
 
@@ -312,6 +409,145 @@ Information's been gathered on the application but there isn't any styling excep
 ![Weather App without any CSS](/screenshots/weather-app-plain.png)
 
 #### Weather App with basic visualizing
-Here instead is a Weather App with applied CSS. It has background color which changes based on temperature. Information's been divided on own boxes and it's styled to be clear. 
+Here instead is a Weather App with applied CSS. CSS for this app has been quite basic. Fonts have been resized, weighted, recolored and shadowed. There's a background color, which changes based on temperature. Information's been divided to own bordered flexboxes and it's styled to be clear. Like mentioned earlier, sections of code is divided by `<div>` elements with classes to make it more customisable. The div class **background** takes in class **content**, which includes everything you can see on the site.
 
 ![Weather App with CSS](/screenshots/weather-app-css.png)
+
+#### Background
+
+For background color to change based on temperature, there's a short piece of conditional structure checking the temperature in the beginning of `return()`.  
+
+First of all it checks if WeatherText has been fetched from API. If that is not found, default blue background will be shown. In case of fetching has happened successfully, it checks next if temperature is 5 Celcius degrees or colder. If yes, purplish blue will be shown, otherwise it continues checking if temperature is warmer than 20 Celcius degrees. If the answer is yes, pink background color will be shown. Otherwise it's the default blue.
+
+*Notice that this piece of code replaces `'background'` class in the first div of the code. So, `</div>` is already in place.*
+
+```
+return(
+  <div className = {(typeof weather.WeatherText != 'undefined') 
+        ? ((weather.Temperature.Metric.Value <= 5)
+          ? 'background cold'
+          : ((weather.Temperature.Metric.Value > 20)
+            ? 'background hot'
+            : 'background') )
+        : 'background'}>
+        
+...
+```
+#### CSS file App.css
+
+```
+.content {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: rgb(51, 51, 51);
+  text-align: center;
+  width: 100%;
+  height: 1400px;
+  padding-bottom: calc(46% - 1000px);
+}
+
+.background {
+  background-color: rgb(172, 221, 245);
+  padding-top: 5em;
+}
+
+.background.cold {
+  background-color: rgb(167, 179, 237);
+}
+
+.background.hot {
+  background-color: rgb(246, 178, 219);
+}
+
+.box {
+  background-color: rgba(253, 253, 253, 0.788);
+  width: 30%;
+  height: fit-content;
+  padding: 2.5em 2.5em;
+  box-shadow: 0.25em 0.25em rgba(63, 63, 72, 0.5);
+}
+
+.box.searchbox {
+  margin: auto;
+  border-top-right-radius: 2.5em;
+  border-top-left-radius: 2.5em;
+}
+
+.box.weatherbox {
+  margin: 2em auto;
+  border-bottom-right-radius: 2.5em;
+  border-bottom-left-radius: 2.5em;
+}
+
+.box h1 {
+  font-size: 3.5em;
+  text-shadow: 2px 2px rgb(50, 50, 70, 0.5);
+}
+
+.box p {
+  font-size: 1.25em;
+  text-shadow: 0.5px 0.5px rgb(50, 50, 70, 0.5);
+}
+
+.box input, button {
+  background-color: white;
+  font-size: 0.9em;
+  text-shadow: 0.4px 0.4px rgb(50, 50, 70, 0.5);
+  border: 0.05em solid rgba(131, 140, 151, 0.733);
+  box-shadow: 0.05em 0.05em rgb(194, 194, 194);
+}
+
+.box input {
+  width: 45%;
+  height: 1.2em;
+  padding: 0.3em 0.1em 0.2em 0.5em;
+  border-radius: 0.15em;
+}
+
+.box button {
+  width: min(fit-content, 60%);
+  height: 2em;
+  border-radius: 1em;
+}
+
+.row-date {
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 1.25em;
+  font-weight: 500;
+  text-shadow: 0.4px 0.4px rgb(50, 50, 70, 0.5);
+}
+
+.row-city {
+  display: flex;
+  flex-direction: row;
+  font-size: 2.8em;
+  font-weight: 600;
+  text-shadow: 1.8px 1.8px rgb(50, 50, 70, 0.5);
+  margin: 0.4em auto;
+  border-bottom: 0.5px solid rgb(50, 50, 70, 0.5);
+}
+
+.row-temp {
+  display: flex;
+  flex-direction: row;
+  font-weight: 500;
+  text-shadow: 1.3px 1.3px rgb(50, 50, 70, 0.5);
+  padding-bottom: 0.5em;
+}
+
+.temp{
+  font-size: 2.4em;
+}
+
+.unit {
+  font-size: 1.5em;
+}
+
+.row-desc {
+  display: flex;
+  flex-direction: row;
+  font-size: 1.5em;
+  font-weight: 500;
+  text-shadow: 1px 1px rgb(50, 50, 70, 0.5);
+}
+```
