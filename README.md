@@ -1,3 +1,5 @@
+![Weather App with CSS](public/screenshots/weather-app-css.png)
+
 # Guide to simple Weather App using AccuWeather's API
 **Creator: [Amanda Karjalainen](https://github.com/amakarj)**
 ## Introduction
