@@ -10,6 +10,8 @@ This is the final task of a school project about React fundamentals. It's been d
 
 In the future, improvement of visualizing, as well as, the broader usage of different libraries and APIs are possible. Responsiveness will be improved.
 
+Here is the working **[application](https://amakarj.github.io/react-weather-app/)**.
+
 ## Making Preparations
 
 ### 1. Sign in to AccuWeather and create your own API key
@@ -530,7 +532,7 @@ return(
 }
 ```
 
-## Weather App
+## [Weather App](https://amakarj.github.io/react-weather-app/)
 
 https://user-images.githubusercontent.com/75020361/183698490-36f03d76-f419-4025-9162-a137a42af953.mp4
 
