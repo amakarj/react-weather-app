@@ -2,11 +2,11 @@
 **Creator: [Amanda Karjalainen](https://github.com/amakarj)**
 ## Introduction
 
-This guide is step-by-step guide for a simple Weather App. Weather data has been fetched from AccuWeather's Locations and Current Conditions API. Main emphasis is on how you work with APIs - how to fetch data and display it. There will be a visual example of the app at the end, but it's not the guide's main focus, therefore, it's only a short look. 
+This guide is a step-by-step guide for a simple Weather App. Weather data has been fetched from AccuWeather's Locations API and Current Conditions API. Main emphasis is on how you work with APIs - how to fetch data and display it. There will be a visual example of the app at the end, but it's not the guide's main focus, therefore, it's only a short look. 
 
 This is the final task of a school project about React fundamentals. It's been done alone, but is worked in pairs in other tasks. Some explanations or stages, e.g. pre-installations and definitions of fundamentals, have been excluded from this task as they have already been explained elsewhere. To get introduced on earlier tasks, you can visit **[here](https://github.com/jenhakk/React.js_Fundamentals)**.
 
-In the future, improvement of visualizing as well as the broader usage of different libraries and APIs are possible. Responsiveness will be improved.
+In the future, improvement of visualizing, as well as, the broader usage of different libraries and APIs are possible. Responsiveness will be improved.
 
 ## Making Preparations
 
@@ -32,7 +32,7 @@ In the Weather App of this guide, we’ll get the location as text by user’s i
 
 ![Locations API](public/screenshots/locations-api.png)
 
-On the site that opens, there’s a form which gives the straight URL for fetching data of this API after clicking a button **Send this request**. 
+On the site that opens, there’s a form which gives out the straight URL - for fetching data - after filling the form and clicking a button **Send this request**. 
 
 ![City Search method form and URL](public/screenshots/city-search-method.png)
 
@@ -55,14 +55,14 @@ URL's in form of:
 https://dataservice.accuweather.com/currentconditions/v1/LOCATION_KEY?apikey=YOUR_API_KEY
 ```
 
-*Notice that this time AccuWeather's form requires only API key. **The location key must be included to URL as well**, otherwise the second fetch won't work properly!*
+*Notice that this time AccuWeather's form requires only API key. **The location key must be included into URL as well**, otherwise the second fetch won't work properly!*
 
 
 ## Making the Application
 ### 1.	Searching a city
 
 #### States
-Let’s start by importing useState Hook from React and then declare the states.
+Let’s start by importing useState Hook from React and declaring the states.
 There's a need for two states: 
 - **location** - stores user's input
 - **weather** - stores the weather data fetched from Current Conditions API
@@ -72,6 +72,7 @@ App.js
 ```
 import React, { useState } from 'react';
 import './App.css';
+
 function App() {
   const [location, setLocation] = useState('');
   const [weather, setWeather] = useState('');
@@ -82,13 +83,15 @@ function App() {
 #### Search bar
 
 On this app, there’s a simple search bar (**a text typed input** and **a button**), where the user can type the name of the city. By clicking the button, value is sent to Locations API via URL we’ve got earlier.  
-- The input element's value is **location** state, so we need to set value to it. Create a function `inputChanged()` and connect it to the input element by `onChange` event. This enables typing to element. The given function stores the typed value to the state by `setLocation()` whenever site renders.  
+
+The input element's value is **location** state, so we need to set value to it. Create a function `inputChanged()` and connect it to the input element by `onChange` event. This enables typing to the element. The given function stores the typed value to the state by `setLocation()` whenever site renders.  
 
 Code looks something like this now: 
 
 ```
 import React, { useState } from 'react';
 import './App.css';
+
 function App() {
   const [location, setLocation] = useState('');
   const [weather, setWeather] = useState('');
@@ -103,6 +106,7 @@ function App() {
         <div className = 'box searchbox'>
           <h1>WEATHER APP</h1>
           <p>See current weather by locality</p>
+          
           <input type = 'text' name = 'location' placeholder = 'Search for a locality' value = {location} />{' '}
           <button>Search</button><br />
         </div>
@@ -118,10 +122,10 @@ export default App;
 ### 2. Fetching data
 #### API key
 
-Now that user can type the location, it should be sent forward next.  
+Now that user can type the location, next, it should be sent forward.  
 - First let’s create a new folder **components** inside **src** folder. 
 -	Then add a new file **Api.js** inside the new folder and import it to **App.js**. 
--	The new component we created stores the AccuWeather’s API key, we need when fetching data.
+-	The new component we created stores the AccuWeather’s API key, which we need for fetching data.
 
 Api.js
  
@@ -143,8 +147,7 @@ function App() {
 
 Remember, F12 is a friend. You’ll get to see the actual responses before displaying on the site.  
 
-Below you can see a beginning of response from Locations API. The user has searched for Helsinki and API returns the data according to it.  
-The location key **Key** we need is the second a key-value pair. It can be accessed it with **`${result[0].Key}`**.  
+Below you can see a beginning of response from Locations API. The user has searched for Helsinki and API returns the data according to it. The location key **Key** we need is the second a key-value pair. It can be accessed it with **`${result[0].Key}`**.  
 
 `[{"Version":1,"Key":"133328","Type":"City","Rank":30,"LocalizedName":"Helsinki","EnglishName":"Helsinki",`  
 
@@ -152,7 +155,7 @@ The location key **Key** we need is the second a key-value pair. It can be acces
 
 #### Fetching
 
-Let’s add an empty function `fetchWeather()` and connect it to the button by `onClick` event.
+Add an empty function `fetchWeather()` and connect it to the button by `onClick` event.
 Now let’s start building the actual function. 
 - Fetch **location key** using `fetch()` method by adding Locations API's URL inside it.  
   - URL: `https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_key}&q=${location}`
@@ -167,6 +170,7 @@ App.js
 import React, { useState } from 'react';
 import './App.css';
 import API_key from './components/Api.js';
+
 function App() {
   const [location, setLocation] = useState('');
   const [weather, setWeather] = useState('');
@@ -198,7 +202,9 @@ Now that data is fetched, we can display it on the page. This weather app will b
 - **description of weather** - WeatherText
 - **icon for described weather** - WeatherIcon
 
-Data is stored in an object in API, so it consists of key and value pairs. The object is fetched and set to the **weather** state, so we’ll get values we want by typing `{weather.keyname}`. You can form your weather data as you want on the site - this is how it is arranged in this Weather App: 
+*If you want to utilize other data, you can check them on **developer/debug tools** (F12) in **Network** and **Response** tabs.*
+
+Data is stored in an object in API, so it consists of key-value pairs. The object is fetched and set to the **weather** state, so we’ll get values we want by typing `{weather.keyname}`. You can form your weather data as you want on the site - this is how it is arranged in this Weather App: 
 
 ```
 ...
@@ -209,14 +215,17 @@ Data is stored in an object in API, so it consists of key and value pairs. The o
     <div className = 'row-city'>
       <div>{location}</div>
     </div>
+    
     <div className = 'row-temp'>
       <div className = 'temp'>
         {Math.round(weather.Temperature.Metric.Value)}
       </div>
+      
       <div className = 'unit'> 
         °C
       </div>
     </div>
+    
     <div className = 'row-desc'>          
       {weather.WeatherText}{' '}
     </div>
@@ -244,8 +253,8 @@ Since temperature and description have been fetched, let's add the icons. AccuWe
 
 *Notice `process.env.PUBLIC_URL` before `getIcon()` function! When deploying React application to GitHub, it stops reading from **public** folder and icons won't work anymore. This way the problem is fixed and icons show alright.*  
 
-The `<img>` element is now in place, but you still need the function `getIcon()` to get the actual icon based. It happens with a icon number we got from API response. 
-Add the function behind some other function before `return()`. The function gets **WeatherIcon** as the parameter, which is numeral, and returns responsive picture from the icons saved to the computer.
+The `<img>` element is now in place, but you still need the function `getIcon()` to get the actual icon. It happens with a icon number we got from API response. 
+Add the function behind some other function before `return()`. The function gets **WeatherIcon** as the parameter, which is numeral, and returns the respective image from icons saved to the computer.
 
 ```
 ...
@@ -289,15 +298,17 @@ const dateBuilder = (d) => {
 
 #### Final code
 
-The code looks something like this now we have added everything:
+The code looks something like this, now we have added everything:
 
 ```
 import React, { useState } from 'react';
 import './App.css';
 import API_key from './components/Api.js';
+
 function App() {
-  const [location, setLocation] = useState(''); // The city typed by user.
-  const [weather, setWeather] = useState(''); // Weather fetched from AccuWeather API.
+  const [location, setLocation] = useState('');
+  const [weather, setWeather] = useState('');
+  
   const fetchWeather = () => {
     fetch(`https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_key}&q=${location}`)
     .then(response => response.json())
@@ -309,9 +320,11 @@ function App() {
       })
     })   
   };
+  
   const inputChanged = (event) => {
     setLocation(event.target.value);
   }
+  
   const dateBuilder = (d) => {
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -321,9 +334,11 @@ function App() {
     let year = d.getFullYear();
     return `${day} ${date} ${month} ${year}`;
   }
+  
   const getIcon = (i) => {
     return `/icons/${i}.png`;
   }
+  
   return (
     <div className = {(typeof weather.WeatherText != 'undefined') 
     ? ((weather.Temperature.Metric.Value <= 5)
@@ -332,30 +347,37 @@ function App() {
         ? 'background hot'
         : 'background') )
     : 'background'}>
+    
       <div className = 'content'>
         <div className = 'box searchbox'>
           <h1>WEATHER APP</h1>
           <p>See current weather by locality</p>
+          
           <input type = 'text' name = 'location' placeholder = 'Search for a locality' value = {location} onChange = {inputChanged} />{' '}
           <button onClick = {fetchWeather}>Search</button><br />
         </div>
+        
         {(typeof weather.WeatherText != 'undefined') ? (
         <div>
           <div className = 'box weatherbox'>
             <div className = 'row-date'>
               {dateBuilder(new Date())}
             </div>
+            
             <div className = 'row-city'>
               <div>{location}</div>
             </div>
+            
             <div className = 'row-temp'>
               <div className = 'temp'>
                 {Math.round(weather.Temperature.Metric.Value)}
               </div>
+              
               <div className = 'unit'> 
                 °C
               </div>
             </div>
+            
             <div className = 'row-desc'>          
               {weather.WeatherText}{' '}<img src = {process.env.PUBLIC_URL + getIcon(weather.WeatherIcon)} alt = 'WeatherIcon'></img>
             </div>
@@ -366,6 +388,7 @@ function App() {
     </div>
   );
 }
+
 export default App;
 ```
 
@@ -378,7 +401,7 @@ Information's been gathered on the application but there isn't any styling excep
 
 #### Weather App with basic visualizing
 
-Here instead is a Weather App with applied CSS. CSS for this app has been quite basic. Fonts have been resized, weighted, recolored and shadowed. There's a background color, which changes based on temperature. Information's been divided to own bordered flexboxes and it's styled to be clear. Like mentioned earlier, sections of code is divided by `<div>` elements with classes to make it more customisable. The div class **background** takes in class **content**, which includes everything you can see on the site.
+Here instead is a Weather App with applied CSS, which has been kept as quite basic but making the app look like something. Fonts have been resized, weighted, recolored and shadowed. There's a background color, which changes based on temperature. Information's been divided to own bordered flexboxes and it's styled to be clear. Like mentioned earlier, sections of code are divided by `<div>` elements with classes to make it more customisable. The div class **background** takes in class **content**, which includes everything you can see on the site.
 
 ![Weather App with CSS](public/screenshots/weather-app-css.png)
 
@@ -388,7 +411,7 @@ For background color to change based on temperature, there's a short piece of co
 
 First of all it checks if WeatherText has been fetched from API. If that is not found, default blue background will be shown. In case of fetching has happened successfully, it checks next if temperature is 5 Celcius degrees or colder. If yes, purplish blue will be shown, otherwise it continues checking if temperature is warmer than 20 Celcius degrees. If the answer is yes, pink background color will be shown. Otherwise it's the default blue.
 
-*Notice that this piece of code replaces `'background'` class in the first div of the code. So, `</div>` is already in place.*
+*Notice that this piece of code replaces `<div className = 'background'>` completely, so, `</div>` is already in place.*
 
 ```
 return(
